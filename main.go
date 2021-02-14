@@ -27,6 +27,7 @@ type smartMeterData struct {
 	GasDelivered            float64 `json:"gasDelivered"`
 	PowerDeliveredTariff1   float64 `json:"powerDeliveredTariff1"`
 	PowerDeliveredTariff2   float64 `json:"powerDeliveredTariff2"`
+}
 
 func main() {
 	serialPort := os.Getenv("USBDEVICE")
