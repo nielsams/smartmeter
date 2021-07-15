@@ -24,6 +24,9 @@ type smartMeterData struct {
 	InstVoltL1              float64 `json:"instVoltL1"`
 	InstVoltL2              float64 `json:"instVoltL2"`
 	InstVoltL3              float64 `json:"instVoltL3"`
+	InstCurrentL1           float64 `json:"instCurrentL1"`
+	InstCurrentL2           float64 `json:"instCurrentL2"`
+	InstCurrentL3           float64 `json:"instCurrentL3"`
 	GasDelivered            float64 `json:"gasDelivered"`
 	PowerDeliveredTariff1   float64 `json:"powerDeliveredTariff1"`
 	PowerDeliveredTariff2   float64 `json:"powerDeliveredTariff2"`
