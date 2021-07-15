@@ -128,6 +128,33 @@ func readMetrics() {
 				currentMetrics.InstVoltL3 = value
 			}
 
+			if rawValue, ok := telegram.InstantaneousCurrentL1(); ok {
+				value, err := strconv.ParseFloat(rawValue, 64)
+				if err != nil {
+					fmt.Println(err)
+					continue
+				}
+				currentMetrics.InstCurrentL1 = value
+			}
+
+			if rawValue, ok := telegram.InstantaneousCurrentL2(); ok {
+				value, err := strconv.ParseFloat(rawValue, 64)
+				if err != nil {
+					fmt.Println(err)
+					continue
+				}
+				currentMetrics.InstCurrentL2 = value
+			}
+
+			if rawValue, ok := telegram.InstantaneousCurrentL3(); ok {
+				value, err := strconv.ParseFloat(rawValue, 64)
+				if err != nil {
+					fmt.Println(err)
+					continue
+				}
+				currentMetrics.InstCurrentL3 = value
+			}
+
 			if rawValue, ok := telegram.MeterReadingElectricityDeliveredToClientTariff1(); ok {
 				value, err := strconv.ParseFloat(rawValue, 64)
 				if err != nil {
