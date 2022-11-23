@@ -1,9 +1,8 @@
-FROM golang:1.15.6 AS builder
+FROM golang:1.19-alpine AS builder
 WORKDIR /go/src/smartmeter
-RUN go get -d -u -v github.com/roaldnefs/go-dsmr
-RUN go get -d -u -v github.com/tarm/serial
-COPY main.go .
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .
+COPY . .
+RUN go mod download
+RUN go build -o app . && ls -al .
 
 FROM alpine:latest
 RUN apk --no-cache add ca-certificates

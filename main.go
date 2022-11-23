@@ -21,6 +21,7 @@ var (
 type smartMeterData struct {
 	Timestamp               string  `json:"timestamp"`
 	CurrentPowerConsumption float64 `json:"currentPowerConsumption"`
+	CurrentPowerGeneration  float64 `json:"currentPowerGeneration"`
 	InstVoltL1              float64 `json:"instVoltL1"`
 	InstVoltL2              float64 `json:"instVoltL2"`
 	InstVoltL3              float64 `json:"instVoltL3"`
@@ -30,6 +31,8 @@ type smartMeterData struct {
 	GasDelivered            float64 `json:"gasDelivered"`
 	PowerDeliveredTariff1   float64 `json:"powerDeliveredTariff1"`
 	PowerDeliveredTariff2   float64 `json:"powerDeliveredTariff2"`
+	PowerGeneratedTariff1   float64 `json:"powerGeneratedTariff1"`
+	PowerGeneratedTariff2   float64 `json:"powerGeneratedTariff2"`
 }
 
 func main() {
@@ -173,6 +176,24 @@ func readMetrics() {
 				currentMetrics.PowerDeliveredTariff2 = value
 			}
 
+			if rawValue, ok := telegram.MeterReadingElectricityDeliveredByClientTariff1(); ok {
+				value, err := strconv.ParseFloat(rawValue, 64)
+				if err != nil {
+					fmt.Println(err)
+					continue
+				}
+				currentMetrics.PowerGeneratedTariff1 = value
+			}
+
+			if rawValue, ok := telegram.MeterReadingElectricityDeliveredByClientTariff2(); ok {
+				value, err := strconv.ParseFloat(rawValue, 64)
+				if err != nil {
+					fmt.Println(err)
+					continue
+				}
+				currentMetrics.PowerGeneratedTariff2 = value
+			}
+
 			if rawValue, ok := telegram.MeterReadingGasDeliveredToClient(1); ok {
 				value, err := strconv.ParseFloat(rawValue, 64)
 				if err != nil {
@@ -182,14 +203,22 @@ func readMetrics() {
 				currentMetrics.GasDelivered = value
 			}
 
-			i, ok := telegram.DataObjects["1-0:1.7.0"]
-			if ok {
-				value, err := strconv.ParseFloat(i.Value, 64)
+			if rawValue, ok := telegram.ActualElectricityPowerDelivered(); ok { 
+				value, err := strconv.ParseFloat(rawValue, 64)
 				if err != nil {
 					fmt.Println(err)
 					continue
 				}
 				currentMetrics.CurrentPowerConsumption = value
+			}
+
+			if rawValue, ok := telegram.ActualElectricityPowerReceived(); ok { 
+				value, err := strconv.ParseFloat(rawValue, 64)
+				if err != nil {
+					fmt.Println(err)
+					continue
+				}
+				currentMetrics.CurrentPowerGeneration = value
 			}
 		}
 	}()
